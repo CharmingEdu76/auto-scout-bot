@@ -8,10 +8,88 @@
   box-sizing: border-box;
 }
 
+:root {
+  --nic-green: #78C900;
+  --nic-gray: #4A4A4A;
+  --nic-lightgray-1: #808080;
+  --nic-lightgray-2: #B2B2B2;
+  --nic-white: #FFFFFF;
+  --nic-bg: #F9F9F9;
+  --nic-border: #E5E5E5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --nic-bg: #1A1A1A;
+    --nic-border: #333333;
+  }
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Franklin Gothic Book', Arial, sans-serif;
+  background-color: var(--nic-bg);
+  color: var(--nic-gray);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sylfaen', Georgia, serif;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 18pt;
+  color: var(--nic-green);
+  border-bottom: 3px solid var(--nic-green);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 16pt;
+  color: var(--nic-gray);
+  border-bottom: 2px solid var(--nic-gray);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 14pt;
+  color: var(--nic-lightgray-1);
+  border-bottom: 1px solid var(--nic-lightgray-1);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+/* Components */
+@layer components {
+  .nic-btn {
+    @apply px-6 py-2 rounded-md font-medium transition-all duration-200;
+  }
+
+  .nic-btn-primary {
+    @apply nic-btn bg-nic-green text-white hover:bg-opacity-90;
+  }
+
+  .nic-btn-secondary {
+    @apply nic-btn bg-nic-gray text-white hover:bg-opacity-90;
+  }
+
+  .nic-btn-outline {
+    @apply nic-btn border-2 border-nic-green text-nic-green hover:bg-nic-green hover:text-white;
+  }
+
+  .nic-card {
+    @apply bg-white dark:bg-nic-gray rounded-lg shadow-sm border border-nic-border p-6;
+  }
+
+  .nic-input {
+    @apply w-full px-4 py-2 border border-nic-border rounded-md font-nic-body focus:outline-none focus:ring-2 focus:ring-nic-green focus:border-transparent transition;
+  }
+
+  .nic-label {
+    @apply block text-sm font-medium text-nic-gray mb-2;
+  }
 }

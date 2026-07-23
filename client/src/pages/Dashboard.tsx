@@ -22,6 +22,7 @@ export default function Dashboard({ userId }: { userId: string }) {
   const [stats, setStats] = useState<Stats | null>(null)
   const [listings, setListings] = useState<Listing[]>([])
   const [loading, setLoading] = useState(true)
+  const [scanning, setScanning] = useState(false)
 
   useEffect(() => {
     fetchData()
@@ -43,79 +44,126 @@ export default function Dashboard({ userId }: { userId: string }) {
   }
 
   const handleTestScan = async () => {
+    setScanning(true)
     try {
-      const res = await fetch(`/api/test-scan/${userId}`, {
-        method: 'POST',
-      })
+      const res = await fetch(`/api/test-scan/${userId}`, { method: 'POST' })
       const data = await res.json()
       alert(data.message)
-      fetchData()
+      await fetchData()
     } catch (err) {
       console.error('Test scan failed:', err)
+      alert('Test Scan fehlgeschlagen')
+    } finally {
+      setScanning(false)
     }
   }
 
-  if (loading) return <div className="text-center py-8">Lädt...</div>
+  if (loading) {
+    return <div className="text-center py-12 text-nic-gray font-nic-body">Lädt Dashboard...</div>
+  }
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-end mb-4">
+      {/* Action Button */}
+      <div className="flex justify-end">
         <button
           onClick={handleTestScan}
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition"
+          disabled={scanning}
+          className="nic-btn-primary disabled:opacity-50"
         >
-          🧪 Test Scan
+          {scanning ? '⏳ Scanne...' : '🧪 Test Scan'}
         </button>
       </div>
 
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-600 text-sm font-semibold mb-2">Benachrichtigungen</h3>
-          <p className="text-3xl font-bold text-blue-600">{stats?.notificationsSent || 0}</p>
+        {/* Notifications Card */}
+        <div className="nic-card">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-nic-lightgray-1 font-nic-body mb-2">Benachrichtigungen</p>
+              <p className="text-4xl font-bold text-nic-green font-nic-heading">
+                {stats?.notificationsSent || 0}
+              </p>
+            </div>
+            <div className="text-4xl">🔔</div>
+          </div>
+          <p className="text-xs text-nic-lightgray-2 mt-3 font-nic-body">Gesendete Alerts</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-600 text-sm font-semibold mb-2">Inserate gescannt</h3>
-          <p className="text-3xl font-bold text-green-600">{stats?.totalListings || 0}</p>
+
+        {/* Listings Card */}
+        <div className="nic-card">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-nic-lightgray-1 font-nic-body mb-2">Inserate gescannt</p>
+              <p className="text-4xl font-bold text-nic-green font-nic-heading">
+                {stats?.totalListings || 0}
+              </p>
+            </div>
+            <div className="text-4xl">📊</div>
+          </div>
+          <p className="text-xs text-nic-lightgray-2 mt-3 font-nic-body">Gesamt analysiert</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-600 text-sm font-semibold mb-2">Status</h3>
-          <p className="text-lg font-bold text-green-600">🟢 Aktiv</p>
+
+        {/* Status Card */}
+        <div className="nic-card bg-gradient-to-br from-nic-green/10 to-transparent">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-nic-lightgray-1 font-nic-body mb-2">Status</p>
+              <p className="text-2xl font-bold text-nic-green font-nic-heading">🟢 Aktiv</p>
+            </div>
+            <div className="text-4xl">✓</div>
+          </div>
+          <p className="text-xs text-nic-lightgray-2 mt-3 font-nic-body">24/7 läuft</p>
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-4">Neueste Angebote</h2>
-        <div className="space-y-4">
-          {listings.length === 0 ? (
-            <p className="text-gray-500">Keine Angebote gefunden. Starten Sie einen Scan!</p>
-          ) : (
-            listings.map((listing) => (
-              <div key={listing.id} className="border border-gray-200 p-4 rounded-lg hover:bg-gray-50">
+      {/* Listings Section */}
+      <div className="nic-card">
+        <h2 className="text-2xl font-nic-heading font-bold text-nic-green mb-6 pb-4 border-b-4 border-nic-green">
+          Neueste Angebote
+        </h2>
+
+        {listings.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-nic-lightgray-1 font-nic-body">Keine Angebote gefunden</p>
+            <p className="text-sm text-nic-lightgray-2 mt-2 font-nic-body">
+              Starten Sie einen Scan, um Angebote zu sehen
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {listings.map((listing) => (
+              <div
+                key={listing.id}
+                className="border-l-4 border-nic-green p-4 bg-nic-bg hover:bg-white transition rounded"
+              >
                 <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-bold text-lg">{listing.title}</h3>
-                    <p className="text-gray-600">{listing.location}</p>
-                    <p className="text-sm text-gray-500">
-                      {listing.mileage.toLocaleString()} km • {listing.year}
-                    </p>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-nic-gray mb-1 font-nic-heading">{listing.title}</h3>
+                    <div className="flex gap-4 text-xs text-nic-lightgray-1 font-nic-body">
+                      <span>📍 {listing.location}</span>
+                      <span>🛣️ {listing.mileage.toLocaleString()} km</span>
+                      <span>📅 {listing.year}</span>
+                    </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-blue-600">€{listing.price.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-nic-green font-nic-heading">€{listing.price.toLocaleString()}</p>
                     {listing.analyzedScore !== null && (
                       <p
-                        className={`text-sm font-semibold ${
-                          listing.analyzedScore > 0 ? 'text-green-600' : 'text-red-600'
+                        className={`text-sm font-bold mt-1 ${
+                          listing.analyzedScore > 0 ? 'text-nic-green' : 'text-nic-lightgray-2'
                         }`}
                       >
-                        {listing.analyzedScore > 0 ? '✓' : '✗'} {Math.abs(listing.analyzedScore).toFixed(1)}%
+                        {listing.analyzedScore > 0 ? '✓ Gut' : '○ Neutral'} {Math.abs(listing.analyzedScore).toFixed(1)}%
                       </p>
                     )}
                   </div>
                 </div>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

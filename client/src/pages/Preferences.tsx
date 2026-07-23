@@ -48,92 +48,108 @@ export default function Preferences({ userId }: { userId: string }) {
     }
   }
 
-  if (loading) return <div className="text-center py-8">Lädt...</div>
-  if (!prefs) return <div className="text-center py-8">Fehler beim Laden</div>
+  if (loading) return <div className="text-center py-12 text-nic-gray font-nic-body">Lädt...</div>
+  if (!prefs) return <div className="text-center py-12 text-nic-gray font-nic-body">Fehler beim Laden</div>
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow max-w-2xl">
-      <h2 className="text-2xl font-bold mb-6">Suchkriterien</h2>
+    <div className="nic-card max-w-2xl">
+      <h2 className="text-2xl font-nic-heading font-bold text-nic-green mb-8 pb-4 border-b-4 border-nic-green">
+        ⚙️ Suchkriterien
+      </h2>
 
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold mb-2">Marke (optional)</label>
-            <input
-              type="text"
-              placeholder="z.B. BMW"
-              value={prefs.brand || ''}
-              onChange={(e) => setPrefs({ ...prefs, brand: e.target.value || null })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-2">Modell (optional)</label>
-            <input
-              type="text"
-              placeholder="z.B. 3er"
-              value={prefs.model || ''}
-              onChange={(e) => setPrefs({ ...prefs, model: e.target.value || null })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold mb-2">Mindestpreis (€)</label>
-            <input
-              type="number"
-              value={prefs.minPrice || ''}
-              onChange={(e) => setPrefs({ ...prefs, minPrice: e.target.value ? parseInt(e.target.value) : null })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-2">Höchstpreis (€)</label>
-            <input
-              type="number"
-              value={prefs.maxPrice || ''}
-              onChange={(e) => setPrefs({ ...prefs, maxPrice: e.target.value ? parseInt(e.target.value) : null })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold mb-2">Baujahr von</label>
-            <input
-              type="number"
-              value={prefs.minYear || ''}
-              onChange={(e) => setPrefs({ ...prefs, minYear: e.target.value ? parseInt(e.target.value) : null })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-2">Baujahr bis</label>
-            <input
-              type="number"
-              value={prefs.maxYear || ''}
-              onChange={(e) => setPrefs({ ...prefs, maxYear: e.target.value ? parseInt(e.target.value) : null })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-            />
-          </div>
-        </div>
-
+      <div className="space-y-8">
+        {/* Auto Details */}
         <div>
-          <label className="block text-sm font-semibold mb-2">Maximale Laufleistung (km)</label>
+          <h3 className="text-lg font-nic-heading font-bold text-nic-gray mb-4">Fahrzeug</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="nic-label">Marke</label>
+              <input
+                type="text"
+                placeholder="z.B. BMW"
+                value={prefs.brand || ''}
+                onChange={(e) => setPrefs({ ...prefs, brand: e.target.value || null })}
+                className="nic-input"
+              />
+            </div>
+            <div>
+              <label className="nic-label">Modell</label>
+              <input
+                type="text"
+                placeholder="z.B. 3er"
+                value={prefs.model || ''}
+                onChange={(e) => setPrefs({ ...prefs, model: e.target.value || null })}
+                className="nic-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Price Range */}
+        <div>
+          <h3 className="text-lg font-nic-heading font-bold text-nic-gray mb-4">Preis</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="nic-label">Mindestpreis (€)</label>
+              <input
+                type="number"
+                value={prefs.minPrice || ''}
+                onChange={(e) => setPrefs({ ...prefs, minPrice: e.target.value ? parseInt(e.target.value) : null })}
+                className="nic-input"
+              />
+            </div>
+            <div>
+              <label className="nic-label">Höchstpreis (€)</label>
+              <input
+                type="number"
+                value={prefs.maxPrice || ''}
+                onChange={(e) => setPrefs({ ...prefs, maxPrice: e.target.value ? parseInt(e.target.value) : null })}
+                className="nic-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Year Range */}
+        <div>
+          <h3 className="text-lg font-nic-heading font-bold text-nic-gray mb-4">Baujahr</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="nic-label">Von</label>
+              <input
+                type="number"
+                value={prefs.minYear || ''}
+                onChange={(e) => setPrefs({ ...prefs, minYear: e.target.value ? parseInt(e.target.value) : null })}
+                className="nic-input"
+              />
+            </div>
+            <div>
+              <label className="nic-label">Bis</label>
+              <input
+                type="number"
+                value={prefs.maxYear || ''}
+                onChange={(e) => setPrefs({ ...prefs, maxYear: e.target.value ? parseInt(e.target.value) : null })}
+                className="nic-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Mileage */}
+        <div>
+          <label className="nic-label">Maximale Laufleistung (km)</label>
           <input
             type="number"
             value={prefs.maxMileage || ''}
             onChange={(e) => setPrefs({ ...prefs, maxMileage: e.target.value ? parseInt(e.target.value) : null })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            className="nic-input"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-semibold mb-2">
-            Mindest Value-Score: {prefs.minScoreThreshold.toFixed(1)}%
+        {/* Value Score Threshold */}
+        <div className="border-t-2 border-nic-border pt-6">
+          <label className="nic-label">
+            Mindest Value-Score: <span className="text-nic-green font-bold">{prefs.minScoreThreshold.toFixed(1)}%</span>
           </label>
           <input
             type="range"
@@ -142,28 +158,33 @@ export default function Preferences({ userId }: { userId: string }) {
             step="1"
             value={prefs.minScoreThreshold}
             onChange={(e) => setPrefs({ ...prefs, minScoreThreshold: parseFloat(e.target.value) })}
-            className="w-full"
+            className="w-full accent-nic-green"
           />
-          <p className="text-xs text-gray-500 mt-1">Nur Angebote mit besserer Bewertung benachrichtigen</p>
+          <p className="text-xs text-nic-lightgray-2 mt-2 font-nic-body">Nur Angebote mit besserer Bewertung benachrichtigen</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Active Toggle */}
+        <div className="flex items-center gap-3 bg-nic-green/5 p-4 rounded-lg">
           <input
             type="checkbox"
             checked={prefs.active}
             onChange={(e) => setPrefs({ ...prefs, active: e.target.checked })}
-            className="w-4 h-4"
+            className="w-5 h-5 accent-nic-green cursor-pointer"
           />
-          <label className="text-sm font-semibold">Bot aktiv</label>
+          <label className="font-nic-body font-semibold text-nic-gray cursor-pointer">
+            Bot ist {prefs.active ? '🟢 aktiv' : '🔴 inaktiv'}
+          </label>
         </div>
 
-        {saved && <div className="bg-green-100 text-green-800 p-3 rounded-lg">✓ Einstellungen gespeichert!</div>}
+        {/* Save Button & Message */}
+        {saved && (
+          <div className="bg-nic-green/10 text-nic-green p-4 rounded-lg font-nic-body flex items-center gap-2">
+            ✓ Einstellungen gespeichert!
+          </div>
+        )}
 
-        <button
-          onClick={handleSave}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition"
-        >
-          Speichern
+        <button onClick={handleSave} className="nic-btn-primary w-full">
+          💾 Speichern
         </button>
       </div>
     </div>
