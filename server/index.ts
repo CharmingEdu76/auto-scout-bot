@@ -21,7 +21,7 @@ app.get('/health', (req, res) => {
 });
 
 // Serve static files from client/dist (React frontend)
-const clientPath = path.join(__dirname, '../client/dist');
+const clientPath = path.join(__dirname, '../../client/dist');
 app.use(express.static(clientPath));
 
 // Fallback to index.html for React Router (all non-API routes)
