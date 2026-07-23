@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import path from 'path';
 import logger from './logger';
 import { startScheduler } from './scheduler';
 import routes from './routes';
@@ -19,8 +20,13 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
+// Serve static files from dist/client (React frontend)
+const clientPath = path.join(__dirname, '../client');
+app.use(express.static(clientPath));
+
+// Fallback to index.html for React Router (all non-API routes)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientPath, 'index.html'));
 });
 
 async function main() {
