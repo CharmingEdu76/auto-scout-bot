@@ -3,9 +3,14 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
-import logger from './logger';
-import { startScheduler } from './scheduler';
-import routes from './routes';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import logger from './logger.js';
+import { startScheduler } from './scheduler.js';
+import routes from './routes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const port = parseInt(process.env.PORT || '3000');
