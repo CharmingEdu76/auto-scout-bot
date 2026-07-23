@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "../dist/server",
+    "module": "commonjs",
     "noImplicitAny": false,
     "skipLibCheck": true
   },
