@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
-import logger from './logger';
-import { AnalyzedListing } from './analyzer';
-import prisma from './db';
+import logger from './logger.js';
+import { AnalyzedListing } from './analyzer.js';
+import prisma from './db.js';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,

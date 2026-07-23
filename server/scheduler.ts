@@ -1,9 +1,9 @@
 import schedule from 'node-schedule';
-import logger from './logger';
-import prisma from './db';
-import { scrapeListings } from './scraper';
-import { analyzeListings, shouldNotify } from './analyzer';
-import { sendNotifications } from './notifier';
+import logger from './logger.js';
+import prisma from './db.js';
+import { scrapeListings } from './scraper.js';
+import { analyzeListings, shouldNotify } from './analyzer.js';
+import { sendNotifications } from './notifier.js';
 
 export function startScheduler() {
   const cronPattern = process.env.SCHEDULER_INTERVAL || '0 */2 * * *';

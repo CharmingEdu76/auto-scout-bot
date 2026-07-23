@@ -1,6 +1,6 @@
-import prisma from './db';
-import logger from './logger';
-import { ScrapedListing } from './scraper';
+import prisma from './db.js';
+import logger from './logger.js';
+import { ScrapedListing } from './scraper.js';
 
 export interface AnalyzedListing extends ScrapedListing {
   valueScore: number;
