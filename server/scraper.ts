@@ -84,4 +84,4 @@ async function scrapeListings(filters: Record<string, any>): Promise<ScrapedList
   });
 }
 
-module.exports = { scrapeListings, ScrapedListing };
+module.exports = { scrapeListings };
