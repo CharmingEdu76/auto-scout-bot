@@ -1,16 +1,13 @@
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import logger from './logger.js';
-import { startScheduler } from './scheduler.js';
-import routes from './routes.js';
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require('path');
+const logger = require('./logger.js').default;
+const { startScheduler } = require('./scheduler.js');
+const routes = require('./routes.js').default;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = __dirname || path.dirname(require.main.filename);
 
 const app = express();
 const port = parseInt(process.env.PORT || '3000');
@@ -53,3 +50,5 @@ process.on('SIGINT', () => {
 });
 
 main();
+
+module.exports = app;

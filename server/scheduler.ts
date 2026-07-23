@@ -1,9 +1,9 @@
-import schedule from 'node-schedule';
-import logger from './logger.js';
-import prisma from './db.js';
-import { scrapeListings } from './scraper.js';
-import { analyzeListings, shouldNotify } from './analyzer.js';
-import { sendNotifications } from './notifier.js';
+const schedule = require('node-schedule');
+const logger = require('./logger.js').default;
+const prisma = require('./db.js').default;
+const { scrapeListings } = require('./scraper.js');
+const { analyzeListings, shouldNotify } = require('./analyzer.js');
+const { sendNotifications } = require('./notifier.js');
 
 export function startScheduler() {
   const cronPattern = process.env.SCHEDULER_INTERVAL || '0 */2 * * *';
@@ -72,3 +72,5 @@ async function scanForUser(userId: string, email: string, prefs: any) {
     logger.error(`[SCHEDULER] Error for ${email}:`, err);
   }
 }
+
+module.exports = { startScheduler };

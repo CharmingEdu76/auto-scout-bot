@@ -1,4 +1,4 @@
-import logger from './logger.js';
+const logger = require('./logger.js').default;
 
 export interface ScrapedListing {
   platform: string;
@@ -64,7 +64,7 @@ const mockListings: ScrapedListing[] = [
   },
 ];
 
-export async function scrapeListings(filters: Record<string, any>): Promise<ScrapedListing[]> {
+async function scrapeListings(filters: Record<string, any>): Promise<ScrapedListing[]> {
   logger.info(`[SCRAPER] Scraping with filters:`, filters);
 
   return mockListings.filter((listing) => {
@@ -83,3 +83,5 @@ export async function scrapeListings(filters: Record<string, any>): Promise<Scra
     return true;
   });
 }
+
+module.exports = { scrapeListings, ScrapedListing };

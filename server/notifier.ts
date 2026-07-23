@@ -1,7 +1,6 @@
-import nodemailer from 'nodemailer';
-import logger from './logger.js';
-import { AnalyzedListing } from './analyzer.js';
-import prisma from './db.js';
+const nodemailer = require('nodemailer');
+const logger = require('./logger.js').default;
+const prisma = require('./db.js').default;
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -70,9 +69,9 @@ export async function sendNotification(
   }
 }
 
-export async function sendNotifications(
+async function sendNotifications(
   email: string,
-  listings: AnalyzedListing[],
+  listings: any[],
   userId: string
 ): Promise<number> {
   let count = 0;
@@ -92,3 +91,5 @@ export async function sendNotifications(
   }
   return count;
 }
+
+module.exports = { sendNotification, sendNotifications };

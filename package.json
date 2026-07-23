@@ -2,7 +2,6 @@
   "name": "auto-scout-bot",
   "version": "0.1.0",
   "description": "24/7 Bot for finding value car deals across German auto platforms",
-  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "server:dev": "tsx watch server/index.ts",

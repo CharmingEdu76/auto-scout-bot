@@ -1,6 +1,6 @@
-import prisma from './db.js';
-import logger from './logger.js';
-import { ScrapedListing } from './scraper.js';
+const prisma = require('./db.js').default;
+const logger = require('./logger.js').default;
+const { ScrapedListing } = require('./scraper.js');
 
 export interface AnalyzedListing extends ScrapedListing {
   valueScore: number;
@@ -39,6 +39,8 @@ export async function analyzeListings(listings: ScrapedListing[]): Promise<Analy
   return Promise.all(listings.map((listing) => analyzeListing(listing)));
 }
 
-export function shouldNotify(analyzed: AnalyzedListing, threshold: number): boolean {
+function shouldNotify(analyzed: AnalyzedListing, threshold: number): boolean {
   return analyzed.valueScore >= threshold;
 }
+
+module.exports = { analyzeListing, analyzeListings, shouldNotify };

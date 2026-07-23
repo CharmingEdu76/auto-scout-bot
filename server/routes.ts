@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import prisma from './db.js';
-import logger from './logger.js';
+const { Router } = require('express');
+const prisma = require('./db.js').default;
+const logger = require('./logger.js').default;
 
 const router = Router();
 
@@ -171,4 +171,4 @@ router.post('/test-scan/:userId', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = { default: router };
