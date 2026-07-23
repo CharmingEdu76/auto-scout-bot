@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import EmptyState from '../components/EmptyState'
 
 interface Notification {
   id: string
@@ -35,24 +36,21 @@ export default function Notifications({ userId }: { userId: string }) {
   }
 
   if (loading) {
-    return <div className="text-center py-12 text-nic-gray font-nic-body">Lädt...</div>
+    return <EmptyState icon="⏳" title="Lädt..." />
   }
 
   return (
-    <div className="nic-card">
-      <h2 className="text-2xl font-nic-heading font-bold text-nic-green mb-8 pb-4 border-b-4 border-nic-green">
-        🔔 Benachrichtigungsverlauf
-      </h2>
+    <div className="card">
+      <h2 className="mb-8">🔔 Benachrichtigungsverlauf</h2>
 
       {notifications.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-nic-lightgray-1 font-nic-body">Keine Benachrichtigungen vorhanden</p>
-          <p className="text-sm text-nic-lightgray-2 mt-2 font-nic-body">
-            Benachrichtigungen erscheinen hier wenn der Bot interessante Angebote findet
-          </p>
-        </div>
+        <EmptyState
+          icon="📭"
+          title="Keine Benachrichtigungen vorhanden"
+          description="Benachrichtigungen erscheinen hier wenn der Bot interessante Angebote findet"
+        />
       ) : (
-        <div className="space-y-3 max-w-4xl">
+        <div className="space-y-4 max-w-4xl">
           {notifications.map((notif) => {
             const date = new Date(notif.sentAt)
             const formattedDate = date.toLocaleDateString('de-DE', {
@@ -66,25 +64,25 @@ export default function Notifications({ userId }: { userId: string }) {
             return (
               <div
                 key={notif.id}
-                className="border-l-4 border-nic-green p-4 bg-nic-bg hover:bg-white transition rounded"
+                className="card-hover border-l-4 border-nic-green"
               >
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
+                <div className="flex justify-between items-start gap-6">
+                  <div className="flex-1 min-w-0">
                     <h3 className="font-bold text-nic-gray mb-1 font-nic-heading">
                       {notif.listing.brand} {notif.listing.model}
                     </h3>
-                    <p className="text-sm text-nic-lightgray-1 font-nic-body mb-2">
+                    <p className="text-sm text-nic-lightgray-1 font-nic-body mb-3 truncate">
                       {notif.listing.title}
                     </p>
-                    <div className="flex flex-wrap gap-3 text-xs text-nic-lightgray-1 font-nic-body">
+                    <div className="flex flex-wrap gap-4 text-xs text-nic-lightgray-1 font-nic-body">
                       <span>📍 {notif.listing.location}</span>
                       <span>🛣️ {notif.listing.mileage.toLocaleString()} km</span>
                       <span>📅 {notif.listing.year}</span>
                       <span className="text-nic-lightgray-2">⏰ {formattedDate}</span>
                     </div>
                   </div>
-                  <div className="text-right whitespace-nowrap">
-                    <p className="text-2xl font-bold text-nic-green font-nic-heading">
+                  <div className="text-right whitespace-nowrap flex-shrink-0">
+                    <p className="text-3xl font-bold text-nic-green font-nic-heading">
                       €{notif.listing.price.toLocaleString()}
                     </p>
                   </div>

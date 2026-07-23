@@ -8,88 +8,96 @@
   box-sizing: border-box;
 }
 
-:root {
-  --nic-green: #78C900;
-  --nic-gray: #4A4A4A;
-  --nic-lightgray-1: #808080;
-  --nic-lightgray-2: #B2B2B2;
-  --nic-white: #FFFFFF;
-  --nic-bg: #F9F9F9;
-  --nic-border: #E5E5E5;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --nic-bg: #1A1A1A;
-    --nic-border: #333333;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: 'Franklin Gothic Book', Arial, sans-serif;
-  background-color: var(--nic-bg);
-  color: var(--nic-gray);
+  background-color: #F9F9F9;
+  color: #4A4A4A;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
-/* Headings */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Sylfaen', Georgia, serif;
   font-weight: 500;
 }
 
 h1 {
-  font-size: 18pt;
-  color: var(--nic-green);
-  border-bottom: 3px solid var(--nic-green);
-  padding-bottom: 8px;
-  margin-bottom: 16px;
+  font-size: 32px;
+  color: #78C900;
+  border-bottom: 4px solid #78C900;
+  padding-bottom: 12px;
+  letter-spacing: -0.5px;
 }
 
 h2 {
-  font-size: 16pt;
-  color: var(--nic-gray);
-  border-bottom: 2px solid var(--nic-gray);
-  padding-bottom: 6px;
-  margin-bottom: 12px;
+  font-size: 24px;
+  color: #78C900;
+  border-bottom: 4px solid #78C900;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
 }
 
 h3 {
-  font-size: 14pt;
-  color: var(--nic-lightgray-1);
-  border-bottom: 1px solid var(--nic-lightgray-1);
-  padding-bottom: 6px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  color: #4A4A4A;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+p {
+  line-height: 1.6;
 }
 
 /* Components */
 @layer components {
-  .nic-btn {
-    @apply px-6 py-2 rounded-md font-medium transition-all duration-200;
+  /* Buttons */
+  .btn-primary {
+    @apply px-6 py-3 bg-nic-green text-white rounded-lg font-nic-body font-medium transition-all duration-200 hover:bg-opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  .nic-btn-primary {
-    @apply nic-btn bg-nic-green text-white hover:bg-opacity-90;
+  .btn-secondary {
+    @apply px-6 py-3 bg-nic-gray text-white rounded-lg font-nic-body font-medium transition-all duration-200 hover:bg-opacity-90;
   }
 
-  .nic-btn-secondary {
-    @apply nic-btn bg-nic-gray text-white hover:bg-opacity-90;
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-nic-green text-nic-green rounded-lg font-nic-body font-medium transition-all duration-200 hover:bg-nic-green hover:text-white;
   }
 
-  .nic-btn-outline {
-    @apply nic-btn border-2 border-nic-green text-nic-green hover:bg-nic-green hover:text-white;
+  /* Cards */
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-nic-border p-6 transition-all duration-200;
   }
 
-  .nic-card {
-    @apply bg-white dark:bg-nic-gray rounded-lg shadow-sm border border-nic-border p-6;
+  .card-hover {
+    @apply card hover:shadow-md hover:border-nic-green/30;
   }
 
-  .nic-input {
-    @apply w-full px-4 py-2 border border-nic-border rounded-md font-nic-body focus:outline-none focus:ring-2 focus:ring-nic-green focus:border-transparent transition;
+  /* Forms */
+  .form-input {
+    @apply w-full px-4 py-3 border border-nic-border rounded-lg font-nic-body text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-nic-green focus:border-transparent;
   }
 
-  .nic-label {
-    @apply block text-sm font-medium text-nic-gray mb-2;
+  .form-label {
+    @apply block text-sm font-nic-body font-medium text-nic-gray mb-2;
+  }
+
+  .form-group {
+    @apply mb-6;
+  }
+
+  /* Grid */
+  .grid-2 {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  .grid-3 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
 }

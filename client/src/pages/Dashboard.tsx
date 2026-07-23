@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import StatCard from '../components/StatCard'
+import OfferItem from '../components/OfferItem'
+import EmptyState from '../components/EmptyState'
 
 interface Listing {
   id: string
@@ -59,7 +62,11 @@ export default function Dashboard({ userId }: { userId: string }) {
   }
 
   if (loading) {
-    return <div className="text-center py-12 text-nic-gray font-nic-body">Lädt Dashboard...</div>
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-nic-gray font-nic-body">Lädt Dashboard...</p>
+      </div>
+    )
   }
 
   return (
@@ -69,98 +76,59 @@ export default function Dashboard({ userId }: { userId: string }) {
         <button
           onClick={handleTestScan}
           disabled={scanning}
-          className="nic-btn-primary disabled:opacity-50"
+          className="btn-primary disabled:opacity-50"
         >
           {scanning ? '⏳ Scanne...' : '🧪 Test Scan'}
         </button>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Notifications Card */}
-        <div className="nic-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-nic-lightgray-1 font-nic-body mb-2">Benachrichtigungen</p>
-              <p className="text-4xl font-bold text-nic-green font-nic-heading">
-                {stats?.notificationsSent || 0}
-              </p>
-            </div>
-            <div className="text-4xl">🔔</div>
-          </div>
-          <p className="text-xs text-nic-lightgray-2 mt-3 font-nic-body">Gesendete Alerts</p>
-        </div>
-
-        {/* Listings Card */}
-        <div className="nic-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-nic-lightgray-1 font-nic-body mb-2">Inserate gescannt</p>
-              <p className="text-4xl font-bold text-nic-green font-nic-heading">
-                {stats?.totalListings || 0}
-              </p>
-            </div>
-            <div className="text-4xl">📊</div>
-          </div>
-          <p className="text-xs text-nic-lightgray-2 mt-3 font-nic-body">Gesamt analysiert</p>
-        </div>
-
-        {/* Status Card */}
-        <div className="nic-card bg-gradient-to-br from-nic-green/10 to-transparent">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-nic-lightgray-1 font-nic-body mb-2">Status</p>
-              <p className="text-2xl font-bold text-nic-green font-nic-heading">🟢 Aktiv</p>
-            </div>
-            <div className="text-4xl">✓</div>
-          </div>
-          <p className="text-xs text-nic-lightgray-2 mt-3 font-nic-body">24/7 läuft</p>
-        </div>
+      <div className="grid-3">
+        <StatCard
+          label="Benachrichtigungen"
+          value={stats?.notificationsSent || 0}
+          icon="🔔"
+          sublabel="Gesendete Alerts"
+        />
+        <StatCard
+          label="Inserate gescannt"
+          value={stats?.totalListings || 0}
+          icon="📊"
+          sublabel="Gesamt analysiert"
+        />
+        <StatCard
+          label="Status"
+          value="🟢 Aktiv"
+          icon="✓"
+          sublabel="24/7 läuft"
+          highlight
+        />
       </div>
 
       {/* Listings Section */}
-      <div className="nic-card">
-        <h2 className="text-2xl font-nic-heading font-bold text-nic-green mb-6 pb-4 border-b-4 border-nic-green">
-          Neueste Angebote
-        </h2>
+      <div className="card">
+        <h2 className="mb-8">Neueste Angebote</h2>
 
         {listings.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-nic-lightgray-1 font-nic-body">Keine Angebote gefunden</p>
-            <p className="text-sm text-nic-lightgray-2 mt-2 font-nic-body">
-              Starten Sie einen Scan, um Angebote zu sehen
-            </p>
-          </div>
+          <EmptyState
+            icon="📭"
+            title="Keine Angebote gefunden"
+            description="Starten Sie einen Scan, um Angebote zu sehen"
+          />
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {listings.map((listing) => (
-              <div
+              <OfferItem
                 key={listing.id}
-                className="border-l-4 border-nic-green p-4 bg-nic-bg hover:bg-white transition rounded"
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="font-bold text-nic-gray mb-1 font-nic-heading">{listing.title}</h3>
-                    <div className="flex gap-4 text-xs text-nic-lightgray-1 font-nic-body">
-                      <span>📍 {listing.location}</span>
-                      <span>🛣️ {listing.mileage.toLocaleString()} km</span>
-                      <span>📅 {listing.year}</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-nic-green font-nic-heading">€{listing.price.toLocaleString()}</p>
-                    {listing.analyzedScore !== null && (
-                      <p
-                        className={`text-sm font-bold mt-1 ${
-                          listing.analyzedScore > 0 ? 'text-nic-green' : 'text-nic-lightgray-2'
-                        }`}
-                      >
-                        {listing.analyzedScore > 0 ? '✓ Gut' : '○ Neutral'} {Math.abs(listing.analyzedScore).toFixed(1)}%
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
+                title={listing.title}
+                brand={listing.brand}
+                model={listing.model}
+                price={listing.price}
+                mileage={listing.mileage}
+                year={listing.year}
+                location={listing.location}
+                score={listing.analyzedScore}
+              />
             ))}
           </div>
         )}
