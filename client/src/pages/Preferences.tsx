@@ -24,7 +24,7 @@ export default function Preferences({ userId }: { userId: string }) {
 
   const fetchPreferences = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/preferences/${userId}`)
+      const res = await fetch(`/api/preferences/${userId}`)
       setPrefs(await res.json())
     } catch (err) {
       console.error('Error loading preferences:', err)
@@ -36,7 +36,7 @@ export default function Preferences({ userId }: { userId: string }) {
   const handleSave = async () => {
     if (!prefs) return
     try {
-      await fetch(`http://localhost:3000/api/preferences/${userId}`, {
+      await fetch(`/api/preferences/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(prefs),

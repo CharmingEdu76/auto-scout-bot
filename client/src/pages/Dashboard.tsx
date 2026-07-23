@@ -30,8 +30,8 @@ export default function Dashboard({ userId }: { userId: string }) {
   const fetchData = async () => {
     try {
       const [statsRes, listingsRes] = await Promise.all([
-        fetch(`http://localhost:3000/api/stats/${userId}`),
-        fetch('http://localhost:3000/api/listings?limit=10'),
+        fetch(`/api/stats/${userId}`),
+        fetch('/api/listings?limit=10'),
       ])
       setStats(await statsRes.json())
       setListings(await listingsRes.json())
@@ -44,7 +44,7 @@ export default function Dashboard({ userId }: { userId: string }) {
 
   const handleTestScan = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/test-scan/${userId}`, {
+      const res = await fetch(`/api/test-scan/${userId}`, {
         method: 'POST',
       })
       const data = await res.json()

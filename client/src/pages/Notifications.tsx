@@ -25,7 +25,7 @@ export default function Notifications({ userId }: { userId: string }) {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/notifications/${userId}`)
+      const res = await fetch(`/api/notifications/${userId}`)
       setNotifications(await res.json())
     } catch (err) {
       console.error('Error loading notifications:', err)
