@@ -7,8 +7,6 @@ const logger = require('./logger.js').default;
 const { startScheduler } = require('./scheduler.js');
 const routes = require('./routes.js').default;
 
-const __dirname = __dirname || path.dirname(require.main.filename);
-
 const app = express();
 const port = parseInt(process.env.PORT || '3000');
 
