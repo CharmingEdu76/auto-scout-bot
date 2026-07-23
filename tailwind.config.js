@@ -1,55 +1,25 @@
 export default {
   content: ['./client/index.html', './client/src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    colors: {
-      'nic-green': '#78C900',
-      'nic-gray': '#4A4A4A',
-      'nic-lightgray-1': '#808080',
-      'nic-lightgray-2': '#B2B2B2',
-      'nic-white': '#FFFFFF',
-      'nic-bg': '#F9F9F9',
-      'nic-dark-bg': '#1A1A1A',
-      'nic-border': '#E5E5E5',
-      white: '#FFFFFF',
-      transparent: 'transparent',
-    },
-    fontFamily: {
-      'nic-heading': ['Sylfaen', 'Georgia', 'serif'],
-      'nic-body': ['Franklin Gothic Book', 'Arial', 'sans-serif'],
-    },
-    fontSize: {
-      xs: '12px',
-      sm: '14px',
-      base: '16px',
-      lg: '18px',
-      xl: '20px',
-      '2xl': '24px',
-      '3xl': '32px',
-      '4xl': '40px',
-    },
-    spacing: {
-      0: '0',
-      1: '4px',
-      2: '8px',
-      3: '12px',
-      4: '16px',
-      5: '20px',
-      6: '24px',
-      8: '32px',
-      10: '40px',
-      12: '48px',
-      16: '64px',
-    },
     extend: {
-      borderRadius: {
-        'lg': '8px',
-        'md': '6px',
-        'sm': '4px',
+      colors: {
+        brand: {
+          DEFAULT: '#78C900',
+          dark: '#5fa300',
+          light: '#eaf7d6',
+        },
       },
-      boxShadow: {
-        'sm': '0 1px 2px 0 rgba(0,0,0,0.05)',
-        'md': '0 4px 6px -1px rgba(0,0,0,0.1)',
-        'lg': '0 10px 15px -3px rgba(0,0,0,0.1)',
+      fontFamily: {
+        sans: [
+          'Inter',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+        ],
       },
     },
   },

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import StatCard from '../components/StatCard'
 import OfferItem from '../components/OfferItem'
 import EmptyState from '../components/EmptyState'
+import PageHeader from '../components/PageHeader'
+import Spinner from '../components/Spinner'
+import Icon from '../components/Icon'
 
 interface Listing {
   id: string
@@ -61,62 +64,65 @@ export default function Dashboard({ userId }: { userId: string }) {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-nic-gray font-nic-body">Lädt Dashboard...</p>
-      </div>
-    )
-  }
+  if (loading) return <Spinner label="Lädt Dashboard…" />
 
   return (
-    <div className="space-y-8">
-      {/* Action Button */}
-      <div className="flex justify-end">
-        <button
-          onClick={handleTestScan}
-          disabled={scanning}
-          className="btn-primary disabled:opacity-50"
-        >
-          {scanning ? '⏳ Scanne...' : '🧪 Test Scan'}
-        </button>
-      </div>
+    <div>
+      <PageHeader
+        title="Dashboard"
+        subtitle="Übersicht über deine gefundenen Angebote"
+        action={
+          <button onClick={handleTestScan} disabled={scanning} className="btn-primary">
+            <Icon name="search" className="h-4 w-4" />
+            {scanning ? 'Scanne…' : 'Scan starten'}
+          </button>
+        }
+      />
 
-      {/* Stats Grid */}
-      <div className="grid-3">
+      {/* Stats */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
           label="Benachrichtigungen"
-          value={stats?.notificationsSent || 0}
-          icon="🔔"
+          value={stats?.notificationsSent ?? 0}
+          icon="bell"
           sublabel="Gesendete Alerts"
         />
         <StatCard
           label="Inserate gescannt"
-          value={stats?.totalListings || 0}
-          icon="📊"
+          value={stats?.totalListings ?? 0}
+          icon="dashboard"
           sublabel="Gesamt analysiert"
         />
         <StatCard
-          label="Status"
-          value="🟢 Aktiv"
-          icon="✓"
-          sublabel="24/7 läuft"
-          highlight
+          label="Bot-Status"
+          value={
+            <span className="inline-flex items-center gap-2 text-2xl">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand" />
+              </span>
+              Aktiv
+            </span>
+          }
+          icon="activity"
+          sublabel="Läuft rund um die Uhr"
+          accent
         />
       </div>
 
-      {/* Listings Section */}
-      <div className="card">
-        <h2 className="mb-8">Neueste Angebote</h2>
-
+      {/* Listings */}
+      <div className="mt-8">
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">Neueste Angebote</h2>
         {listings.length === 0 ? (
-          <EmptyState
-            icon="📭"
-            title="Keine Angebote gefunden"
-            description="Starten Sie einen Scan, um Angebote zu sehen"
-          />
+          <div className="card">
+            <EmptyState
+              icon="search"
+              title="Noch keine Angebote"
+              description="Starte einen Scan, um passende Fahrzeuge zu finden."
+            />
+          </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {listings.map((listing) => (
               <OfferItem
                 key={listing.id}

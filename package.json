@@ -5,10 +5,10 @@
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "server:dev": "tsx watch server/index.ts",
-    "client:dev": "vite client",
+    "client:dev": "vite --config vite.config.ts",
     "build": "npm run build:server && npm run build:client",
     "build:server": "tsc --project server/tsconfig.json || true",
-    "build:client": "vite build client",
+    "build:client": "vite build --config vite.config.ts",
     "preview": "vite preview",
     "start": "node dist/server/index.js",
     "test": "vitest",

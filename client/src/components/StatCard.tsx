@@ -1,24 +1,29 @@
+import type { ReactNode } from 'react'
+import Icon from './Icon'
+
 interface StatCardProps {
   label: string
-  value: number | string
+  value: ReactNode
   icon: string
   sublabel?: string
-  highlight?: boolean
+  accent?: boolean
 }
 
-export default function StatCard({ label, value, icon, sublabel, highlight = false }: StatCardProps) {
+export default function StatCard({ label, value, icon, sublabel, accent }: StatCardProps) {
   return (
-    <div className={`card ${highlight ? 'bg-gradient-to-br from-nic-green/10 to-transparent' : ''}`}>
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <p className="text-sm text-nic-lightgray-1 font-nic-body mb-3">{label}</p>
-          <p className="text-4xl font-bold text-nic-green font-nic-heading">{value}</p>
-          {sublabel && (
-            <p className="text-xs text-nic-lightgray-2 font-nic-body mt-3">{sublabel}</p>
-          )}
-        </div>
-        <div className="text-5xl leading-none">{icon}</div>
+    <div className="rounded-xl border border-gray-200 bg-white p-5">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium text-gray-500">{label}</span>
+        <span
+          className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+            accent ? 'bg-brand/10 text-brand-dark' : 'bg-gray-100 text-gray-400'
+          }`}
+        >
+          <Icon name={icon} className="h-5 w-5" />
+        </span>
       </div>
+      <div className="mt-3 text-3xl font-semibold text-gray-900">{value}</div>
+      {sublabel && <p className="mt-1 text-sm text-gray-400">{sublabel}</p>}
     </div>
   )
 }

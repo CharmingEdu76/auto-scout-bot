@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
+import PageHeader from '../components/PageHeader'
+import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
+import Icon from '../components/Icon'
 
 interface UserPreferences {
   id: string
@@ -49,159 +52,167 @@ export default function Preferences({ userId }: { userId: string }) {
     }
   }
 
-  if (loading) return <EmptyState icon="⏳" title="Lädt..." />
-  if (!prefs) return <EmptyState icon="⚠️" title="Fehler beim Laden" />
+  if (loading) return <Spinner />
+  if (!prefs) return <EmptyState icon="alert" title="Fehler beim Laden" />
+
+  const num = (v: string) => (v ? parseInt(v) : null)
 
   return (
-    <div className="max-w-2xl">
-      <div className="card">
-        <h2 className="mb-8">⚙️ Suchkriterien</h2>
+    <div className="max-w-3xl">
+      <PageHeader title="Einstellungen" subtitle="Definiere deine Suchkriterien für den Bot" />
 
-        <div className="space-y-8">
-          {/* Fahrzeug */}
-          <div>
-            <h3 className="section-title">Fahrzeug</h3>
-            <div className="grid-2">
-              <div className="form-group">
-                <label className="form-label">Marke</label>
-                <input
-                  type="text"
-                  placeholder="z.B. BMW"
-                  value={prefs.brand || ''}
-                  onChange={(e) => setPrefs({ ...prefs, brand: e.target.value || null })}
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Modell</label>
-                <input
-                  type="text"
-                  placeholder="z.B. 3er"
-                  value={prefs.model || ''}
-                  onChange={(e) => setPrefs({ ...prefs, model: e.target.value || null })}
-                  className="form-input"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="divider" />
-
-          {/* Preis */}
-          <div>
-            <h3 className="section-title">Preis</h3>
-            <div className="grid-2">
-              <div className="form-group">
-                <label className="form-label">Mindestpreis (€)</label>
-                <input
-                  type="number"
-                  value={prefs.minPrice || ''}
-                  onChange={(e) => setPrefs({ ...prefs, minPrice: e.target.value ? parseInt(e.target.value) : null })}
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Höchstpreis (€)</label>
-                <input
-                  type="number"
-                  value={prefs.maxPrice || ''}
-                  onChange={(e) => setPrefs({ ...prefs, maxPrice: e.target.value ? parseInt(e.target.value) : null })}
-                  className="form-input"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="divider" />
-
-          {/* Baujahr */}
-          <div>
-            <h3 className="section-title">Baujahr</h3>
-            <div className="grid-2">
-              <div className="form-group">
-                <label className="form-label">Von</label>
-                <input
-                  type="number"
-                  value={prefs.minYear || ''}
-                  onChange={(e) => setPrefs({ ...prefs, minYear: e.target.value ? parseInt(e.target.value) : null })}
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Bis</label>
-                <input
-                  type="number"
-                  value={prefs.maxYear || ''}
-                  onChange={(e) => setPrefs({ ...prefs, maxYear: e.target.value ? parseInt(e.target.value) : null })}
-                  className="form-input"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="divider" />
-
-          {/* Laufleistung */}
-          <div>
-            <h3 className="section-title">Laufleistung</h3>
-            <div className="form-group">
-              <label className="form-label">Maximale km</label>
+      <div className="space-y-6">
+        {/* Fahrzeug */}
+        <section className="card">
+          <h2 className="mb-4 text-base font-semibold text-gray-900">Fahrzeug</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="label">Marke</label>
               <input
-                type="number"
-                value={prefs.maxMileage || ''}
-                onChange={(e) => setPrefs({ ...prefs, maxMileage: e.target.value ? parseInt(e.target.value) : null })}
-                className="form-input"
+                type="text"
+                placeholder="z.B. BMW"
+                value={prefs.brand || ''}
+                onChange={(e) => setPrefs({ ...prefs, brand: e.target.value || null })}
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Modell</label>
+              <input
+                type="text"
+                placeholder="z.B. 3er"
+                value={prefs.model || ''}
+                onChange={(e) => setPrefs({ ...prefs, model: e.target.value || null })}
+                className="input"
               />
             </div>
           </div>
+        </section>
 
-          <div className="divider" />
+        {/* Preis & Baujahr */}
+        <section className="card">
+          <h2 className="mb-4 text-base font-semibold text-gray-900">Preis & Baujahr</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="label">Mindestpreis (€)</label>
+              <input
+                type="number"
+                placeholder="0"
+                value={prefs.minPrice ?? ''}
+                onChange={(e) => setPrefs({ ...prefs, minPrice: num(e.target.value) })}
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Höchstpreis (€)</label>
+              <input
+                type="number"
+                placeholder="Beliebig"
+                value={prefs.maxPrice ?? ''}
+                onChange={(e) => setPrefs({ ...prefs, maxPrice: num(e.target.value) })}
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Baujahr von</label>
+              <input
+                type="number"
+                placeholder="z.B. 2015"
+                value={prefs.minYear ?? ''}
+                onChange={(e) => setPrefs({ ...prefs, minYear: num(e.target.value) })}
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Baujahr bis</label>
+              <input
+                type="number"
+                placeholder="z.B. 2024"
+                value={prefs.maxYear ?? ''}
+                onChange={(e) => setPrefs({ ...prefs, maxYear: num(e.target.value) })}
+                className="input"
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <label className="label">Maximale Laufleistung (km)</label>
+            <input
+              type="number"
+              placeholder="z.B. 150000"
+              value={prefs.maxMileage ?? ''}
+              onChange={(e) => setPrefs({ ...prefs, maxMileage: num(e.target.value) })}
+              className="input"
+            />
+          </div>
+        </section>
 
-          {/* Value Score */}
+        {/* Value Score */}
+        <section className="card">
+          <div className="mb-1 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-gray-900">Mindest Value-Score</h2>
+            <span className="rounded-md bg-brand/10 px-2.5 py-1 text-sm font-semibold text-brand-dark">
+              {prefs.minScoreThreshold.toFixed(0)} %
+            </span>
+          </div>
+          <p className="mb-4 text-sm text-gray-500">
+            Nur Angebote mit besserer Bewertung lösen eine Benachrichtigung aus.
+          </p>
+          <input
+            type="range"
+            min="0"
+            max="50"
+            step="1"
+            value={prefs.minScoreThreshold}
+            onChange={(e) =>
+              setPrefs({ ...prefs, minScoreThreshold: parseFloat(e.target.value) })
+            }
+            className="h-2 w-full cursor-pointer appearance-none rounded-full bg-gray-200 accent-brand"
+          />
+          <div className="mt-1 flex justify-between text-xs text-gray-400">
+            <span>0 %</span>
+            <span>50 %</span>
+          </div>
+        </section>
+
+        {/* Status */}
+        <section className="card flex items-center justify-between">
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <label className="form-label m-0">Mindest Value-Score</label>
-              <span className="text-lg font-bold text-nic-green">{prefs.minScoreThreshold.toFixed(0)}%</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="50"
-              step="1"
-              value={prefs.minScoreThreshold}
-              onChange={(e) => setPrefs({ ...prefs, minScoreThreshold: parseFloat(e.target.value) })}
-              className="w-full accent-nic-green h-2 rounded-lg appearance-none cursor-pointer"
-            />
-            <p className="text-hint mt-2">Nur Angebote mit besserer Bewertung benachrichtigen</p>
+            <h2 className="text-base font-semibold text-gray-900">Bot-Aktivität</h2>
+            <p className="mt-1 text-sm text-gray-500">
+              {prefs.active
+                ? 'Der Bot sucht aktiv nach neuen Angeboten.'
+                : 'Der Bot ist pausiert.'}
+            </p>
           </div>
-
-          <div className="divider" />
-
-          {/* Bot Status */}
-          <div className="flex items-center gap-3 p-4 bg-nic-green/5 rounded-lg border border-nic-green/20">
-            <input
-              type="checkbox"
-              checked={prefs.active}
-              onChange={(e) => setPrefs({ ...prefs, active: e.target.checked })}
-              className="w-5 h-5 accent-nic-green cursor-pointer"
+          <button
+            type="button"
+            role="switch"
+            aria-checked={prefs.active}
+            onClick={() => setPrefs({ ...prefs, active: !prefs.active })}
+            className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors ${
+              prefs.active ? 'bg-brand' : 'bg-gray-300'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                prefs.active ? 'translate-x-6' : 'translate-x-1'
+              }`}
             />
-            <label className="font-nic-body font-semibold text-nic-gray cursor-pointer">
-              Bot ist {prefs.active ? '🟢 aktiv' : '🔴 inaktiv'}
-            </label>
-          </div>
-
-          {/* Success Message */}
-          {saved && (
-            <div className="p-4 bg-nic-green/10 text-nic-green rounded-lg font-nic-body flex items-center gap-2 border border-nic-green/20">
-              <span className="text-lg">✓</span>
-              <span>Einstellungen erfolgreich gespeichert!</span>
-            </div>
-          )}
-
-          {/* Save Button */}
-          <button onClick={handleSave} className="btn-primary w-full">
-            💾 Speichern
           </button>
+        </section>
+
+        {/* Save */}
+        <div className="flex items-center gap-4">
+          <button onClick={handleSave} className="btn-primary">
+            <Icon name="check" className="h-4 w-4" />
+            Speichern
+          </button>
+          {saved && (
+            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-dark">
+              <Icon name="check" className="h-4 w-4" />
+              Gespeichert
+            </span>
+          )}
         </div>
       </div>
     </div>

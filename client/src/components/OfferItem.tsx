@@ -1,3 +1,5 @@
+import Icon from './Icon'
+
 interface OfferItemProps {
   title: string
   brand: string
@@ -19,39 +21,53 @@ export default function OfferItem({
   location,
   score,
 }: OfferItemProps) {
-  const scoreColor = score && score > 0 ? 'text-nic-green' : 'text-nic-lightgray-2'
-  const scoreText = score && score > 0 ? '✓ Gut' : '○ Neutral'
+  const hasScore = score !== null && score !== undefined
+  const isGood = hasScore && score > 0
 
   return (
-    <div className="card-hover border-l-4 border-nic-green">
-      <div className="flex justify-between items-start gap-6">
-        <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-nic-gray mb-1 font-nic-heading">
+    <div className="flex items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white p-4 transition-colors hover:border-gray-300 hover:bg-gray-50/50">
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <h3 className="truncate text-base font-semibold text-gray-900">
             {brand} {model}
           </h3>
-          <p className="text-sm text-nic-lightgray-1 font-nic-body mb-3 truncate">{title}</p>
-          <div className="flex flex-wrap gap-4 text-xs text-nic-lightgray-1 font-nic-body">
-            <span className="flex items-center gap-1">
-              📍 {location}
+          {hasScore && (
+            <span
+              className={`inline-flex flex-shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
+                isGood ? 'bg-brand/10 text-brand-dark' : 'bg-gray-100 text-gray-500'
+              }`}
+            >
+              <Icon name={isGood ? 'trending-up' : 'minus'} className="h-3 w-3" />
+              {isGood ? 'Guter Deal' : 'Neutral'}
             </span>
-            <span className="flex items-center gap-1">
-              🛣️ {mileage.toLocaleString()} km
-            </span>
-            <span className="flex items-center gap-1">
-              📅 {year}
-            </span>
-          </div>
-        </div>
-        <div className="text-right whitespace-nowrap flex-shrink-0">
-          <p className="text-3xl font-bold text-nic-green font-nic-heading">
-            €{price.toLocaleString()}
-          </p>
-          {score !== null && score !== undefined && (
-            <p className={`text-sm font-bold mt-2 ${scoreColor}`}>
-              {scoreText} {Math.abs(score).toFixed(1)}%
-            </p>
           )}
         </div>
+        <p className="mt-0.5 truncate text-sm text-gray-500">{title}</p>
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-400">
+          <span className="inline-flex items-center gap-1.5">
+            <Icon name="map-pin" className="h-4 w-4" />
+            {location}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Icon name="gauge" className="h-4 w-4" />
+            {mileage.toLocaleString('de-DE')} km
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Icon name="calendar" className="h-4 w-4" />
+            {year}
+          </span>
+        </div>
+      </div>
+      <div className="flex-shrink-0 text-right">
+        <p className="text-xl font-semibold text-gray-900">
+          {price.toLocaleString('de-DE')} €
+        </p>
+        {hasScore && (
+          <p className={`text-sm font-medium ${isGood ? 'text-brand-dark' : 'text-gray-400'}`}>
+            {isGood ? '+' : ''}
+            {score.toFixed(1)} %
+          </p>
+        )}
       </div>
     </div>
   )
