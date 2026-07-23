@@ -20,8 +20,8 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Serve static files from dist/client (React frontend)
-const clientPath = path.join(__dirname, '..');
+// Serve static files from client/dist (React frontend)
+const clientPath = path.join(__dirname, '../client/dist');
 app.use(express.static(clientPath));
 
 // Fallback to index.html for React Router (all non-API routes)
