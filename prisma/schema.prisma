@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  preferences        UserPreference?
+  notificationsSent  NotificationSent[]
+
+  @@map("users")
+}
+
+model UserPreference {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  brand              String?
+  model              String?
+  minPrice           Int?
+  maxPrice           Int?
+  minYear            Int?
+  maxYear            Int?
+  maxMileage         Int?
+  minScoreThreshold  Float    @default(15.0)
+  active             Boolean  @default(true)
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("user_preferences")
+}
+
+model Listing {
+  id           String   @id @default(cuid())
+  platform     String
+  externalId   String
+  title        String
+  price        Int
+  mileage      Int
+  year         Int
+  brand        String
+  model        String
+  condition    String
+  location     String
+  sellerContact Json    @default("{}")
+  images       Json    @default("[]")
+  url          String
+
+  analyzedScore Float?
+  notified      Boolean  @default(false)
+
+  scrapedAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  notificationsSent NotificationSent[]
+
+  @@unique([platform, externalId])
+  @@index([brand])
+  @@index([model])
+  @@index([price])
+  @@index([analyzedScore])
+  @@map("listings")
+}
+
+model NotificationSent {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingId   String
+  listing     Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  sentAt      DateTime @default(now())
+
+  @@index([userId])
+  @@index([listingId])
+  @@map("notifications_sent")
+}
