@@ -5,6 +5,7 @@
     "outDir": "../dist/server",
     "module": "commonjs",
     "noImplicitAny": false,
+    "noEmitOnError": false,
     "skipLibCheck": true
   },
   "include": ["*.ts"]
